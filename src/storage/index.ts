@@ -17,7 +17,7 @@ export function get<V extends unknown = unknown>(key: string, init: (prop: strin
         fs.writeFileSync(file, JSON.stringify({}));
     }
 
-    const raw = JSON.parse(fs.readFileSync(file, "utf-8"));
+    const raw = read(file);
 
     return new Proxy(raw, {
         set: (target, prop, value) => {
@@ -42,4 +42,21 @@ export function users(): Record<string, User> {
             items: [],
         },
     }));
+}
+
+const _cache = new Map<string, [exp: number, data: unknown]>();
+function read(file: string) {
+    const cached = _cache.get(file);
+    if (cached) {
+        const [exp, data] = cached;
+        if (exp > Date.now()) {
+            return data;
+        } else {
+            _cache.delete(file);
+        }
+    }
+
+    const raw = JSON.parse(fs.readFileSync(file, "utf-8"));
+    _cache.set(file, [Date.now() + 3_000, raw]);
+    return raw;
 }

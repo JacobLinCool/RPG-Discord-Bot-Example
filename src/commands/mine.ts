@@ -28,15 +28,28 @@ const module: InteractionModule<ChatInputCommandInteraction> = {
             };
 
             const count = Math.floor(Math.random() * 40) + 10;
+            const gold = Math.random() < 0.3;
 
             const u = users();
-            const old = u[interaction.user.id];
             u[interaction.user.id] = {
-                ...old,
-                exp: old.exp + count,
+                ...u[interaction.user.id],
+                exp: u[interaction.user.id].exp + count + (gold ? 100 : 0),
             };
 
-            const embed = new EmbedBuilder().setTitle("You mined some stones!").setDescription(`You mined ${count} stones.`);
+            if (gold && u[interaction.user.id].backpack.items.length < u[interaction.user.id].backpack.size) {
+                u[interaction.user.id].backpack.items.push({
+                    id: "gold",
+                    name: "Gold",
+                    description: "A shiny piece of gold",
+                    type: "misc",
+                });
+                u[interaction.user.id] = u[interaction.user.id];
+            }
+
+            const embed = new EmbedBuilder()
+                .setTitle("You mined some stones!")
+                .setDescription(`You mined ${count} stones.`)
+                .addFields({ name: "Gold", value: gold ? "You also found a piece of gold!" : "You didn't find any gold this time." });
 
             await interaction.reply({ embeds: [embed] });
         } else {
