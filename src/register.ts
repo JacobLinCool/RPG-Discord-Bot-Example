@@ -23,7 +23,7 @@ export async function register(token: string, id: string, directory: string): Pr
     for (const file of fs.readdirSync(dir).filter((file) => file.endsWith(".js"))) {
         const js = path.join(dir, file);
         log(`Loading command from ${js}`);
-        const command = await import(js);
+        const command = require(js);
         commands.push("default" in command ? command.default : command);
     }
 
