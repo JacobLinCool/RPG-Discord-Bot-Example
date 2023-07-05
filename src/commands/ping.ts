@@ -8,7 +8,7 @@ const module: InteractionModule<ChatInputCommandInteraction> = {
     data: new SlashCommandBuilder().setName("ping").setDescription("Replies with Pong!"),
     async execute(client, interaction) {
         log("Pong!");
-        await interaction.reply("Pong!");
+        await interaction.reply({ content: "Pong!", ephemeral: true });
     },
 };
 

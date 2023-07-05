@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import type { InteractionModule } from "../types";
-import { get, users } from "../storage";
+import { users } from "../storage";
 
 const module: InteractionModule<ChatInputCommandInteraction> = {
     data: new SlashCommandBuilder().setName("backpack").setDescription("Show your backpack"),
@@ -26,7 +26,7 @@ const module: InteractionModule<ChatInputCommandInteraction> = {
                 }))
             );
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed], ephemeral: true });
     },
 };
 

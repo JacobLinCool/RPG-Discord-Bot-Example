@@ -7,4 +7,8 @@ export default defineConfig({
     bundle: false,
     format: ["cjs"],
     target: "esnext",
+    esbuildOptions: (ops) => {
+        ops.charset = "utf8";
+        ops.keepNames = true;
+    },
 });
