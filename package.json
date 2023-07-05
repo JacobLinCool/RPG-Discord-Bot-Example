@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepare": "npm run build",
     "start": "node dist",
     "build": "tsup"
   },
